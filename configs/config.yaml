@@ -1,0 +1,133 @@
+# Building Energy Management System Configuration
+
+# Model Configuration
+model:
+  input_features: 4
+  hidden_units: [64, 32]
+  dropout_rate: 0.2
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 50
+  validation_split: 0.2
+
+# Edge-optimized model configuration
+edge_model:
+  input_features: 4
+  hidden_units: [32, 16]
+  dropout_rate: 0.1
+  learning_rate: 0.002
+  batch_size: 16
+  epochs: 30
+  validation_split: 0.2
+
+# Data Configuration
+data:
+  n_samples: 2000
+  hvac_mean: 5.0
+  hvac_std: 2.0
+  lighting_mean: 6.0
+  lighting_std: 1.5
+  occupancy_min: 1
+  occupancy_max: 20
+  temp_mean: 25.0
+  temp_std: 5.0
+  noise_std: 2.0
+  seasonal_factor: 0.3
+
+# Edge Deployment Configuration
+deployment:
+  targets:
+    - tflite
+    - onnx
+    - openvino
+  
+  quantization:
+    tflite_int8: true
+    tflite_int16: false
+    tflite_float16: false
+  
+  optimization:
+    pruning_sparsity: 0.5
+    distillation_temperature: 3.0
+    distillation_alpha: 0.7
+
+# IoT and Messaging Configuration
+iot:
+  mqtt:
+    broker_host: "localhost"
+    broker_port: 1883
+    topic_prefix: "bems/sensors"
+    qos_level: 1
+    keepalive: 60
+  
+  sensors:
+    hvac_topic: "hvac/runtime"
+    lighting_topic: "lighting/usage"
+    occupancy_topic: "occupancy/count"
+    temperature_topic: "weather/temperature"
+    energy_topic: "energy/consumption"
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - mae
+    - rmse
+    - r2
+    - mape
+  
+  edge_metrics:
+    - latency_ms
+    - throughput_fps
+    - model_size_kb
+    - memory_usage_mb
+  
+  test_size: 0.2
+  random_state: 42
+
+# Logging Configuration
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/bems.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# Paths Configuration
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  configs_dir: "configs"
+  logs_dir: "logs"
+  assets_dir: "assets"
+  demo_dir: "demo"
+
+# Device Configuration
+devices:
+  raspberry_pi:
+    cpu_cores: 4
+    memory_mb: 4096
+    storage_gb: 32
+    power_consumption_w: 3.5
+  
+  jetson_nano:
+    cpu_cores: 4
+    memory_mb: 4096
+    gpu_cores: 128
+    power_consumption_w: 10
+  
+  android_device:
+    cpu_cores: 8
+    memory_mb: 8192
+    power_consumption_w: 5
+
+# Safety and Privacy Configuration
+safety:
+  disclaimer_required: true
+  data_retention_days: 30
+  anonymize_logs: true
+  encrypt_sensitive_data: false
+  
+privacy:
+  mask_personal_data: true
+  data_minimization: true
+  consent_required: false
